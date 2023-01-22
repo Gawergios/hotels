@@ -1,81 +1,40 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use App\Models\hotels;
 use App\Models\rooms;
-use Session;
-
+use LaravelLocalization;
+use Illuminate\Http\Request;
 
 class homecontroller extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth");
-    }
+    public function home(){
 
-    public function index(){
-        return view("layout");
-    }
-    public function addhotelview()
-    {
-        return view("dashboard.addhotels");
-    }
+        $hotels = hotels::select(
+            'id',
+            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+            'stars',
+            'description_' . LaravelLocalization::getCurrentLocale() . ' as description',
+            'image',
+        )->get();
+        return view('home.home',['hotels'=>$hotels]);
 
-    public function addhotels(Request $request)
-    {
-        $hotel = $request->validate([
-            'name' => 'required',
-            'stars' => 'required',
-            'description' => 'required',
-        ]);
-        DB::table('hotels')->insert($hotel);
+        //$hotels = hotels::with('rooms')->find();
 
-        return Redirect("/addhotel");
+        // return response()->json($hotel);
     }
 
 
-    public function addroomview()
+    public function hoteldetails($id)
     {
-        return view("dashboard.addrooms");
-    }
-    public function addrooms(Request $request)
-    {
-
-        $room = $request -> validate([
-            'hotel_id' => 'required',
-            'code' => 'required',
-            'net_price' => 'required',
-            'taxes' => 'required',
-            'taxes_type' => 'required',
-            'total' => 'required',
-            'currency' => 'required',
-            'description' => 'required',
-
-        ]);
-        DB::table('rooms')->insert($room);
-
-        return Redirect("/addroom");
-   }
-
-
-    public function allhotels()
-    {
-
-        $hotels = DB::table('hotels')->get();
-
-        return view("dashboard.allhotels",['hotels'=>$hotels]);
+        $hotel = hotels::with('rooms', 'hotelimgs')->find($id);
+        return view('home.hotel', ['hotel' => $hotel]);
     }
 
-
-    public function allrooms()
+    public function roomdetails($id)
     {
-        $rooms = DB::table('hotels')
-            ->join('rooms', 'hotels.id', '=', 'rooms.hotel_id')
-            ->select('rooms.*', 'hotels.*','rooms.id')
-            ->get();
-        return view("dashboard.allrooms", ['rooms' => $rooms]);
-    
+        $room = rooms::with('roomimg')->find($id);
+
+        return view('home.room', ['room' => $room]);
     }
 }

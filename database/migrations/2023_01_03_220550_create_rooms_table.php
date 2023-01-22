@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('taxes_type');
             $table->float('total');
             $table->string('currency');
-            $table->text('description');
+            $table->string('image');
             $table->integer('hotel_id');
             $table->timestamps();
+
         });
     }
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>home</title>
+    <title>Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -28,10 +28,22 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                    <a href="{{url('/')}}" class="nav-link">{{__('message.home')}}</a>
                 </li>
+
+
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a class="nav-link" rel="alternate" hreflang="{{ $localeCode }}"
+                            href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                            {{ $properties['native'] }}
+                        </a>
+                    </li>
+                    @endforeach
+
+
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{url('/logout')}}" class="nav-link">logout</a>
+                    <a href="{{url('/logout')}}" class="nav-link">{{__('message.logout')}}</a>
                 </li>
             </ul>
 
@@ -47,7 +59,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                        <input class="form-control form-control-sidebar" type="search" placeholder="{{__('message.search')}}"
                             aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
@@ -59,45 +71,45 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item">
+                            <a href="{{url('allhotels')}}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p class="text">{{__('message.all hotels')}}</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{url('addhotel')}}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-info"></i>
-                                <p>add hotels</p>
+                                <p>{{__('message.add hotels')}}</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a href="{{url('addroom')}}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-info"></i>
-                                <p>add rooms</p>
+                                <p>{{__('message.add rooms')}}</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{url('allhotel')}}" class="nav-link">
+                            <a href="{{url('addhotelimg')}}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p class="text">all hotels</p>
+                                <p>{{__('message.add hotels images')}}</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('allroom')}}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-warning"></i>
-                                <p>all rooms</p>
+                            <a href="{{url('addroomimg')}}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>{{__('message.add rooms images')}}</p>
                             </a>
                         </li>
-                        
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
         </aside>
-
         <!-- Content Wrapper. Contains page content -->
-
             <div class="tab-content">
 
                     @yield('content')
@@ -105,10 +117,6 @@
 
             </div>
         </div>
-        <!-- /.content-wrapper -->
-
-
-
     </div>
     <!-- ./wrapper -->
 
@@ -129,6 +137,8 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset('dist/js/demo.js')}}"></script>
 
-</body>
 
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    @yield('ajax')
+</body>
 </html>

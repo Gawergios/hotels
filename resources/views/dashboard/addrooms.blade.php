@@ -1,16 +1,32 @@
-@extends('layout')
+@extends('dashboard.layout')
 
 @section('content')
 
 <div class="content-wrapper">
 <section class="content">
                 <div class="container-fluid">
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+
+                    @if(Session::has('message'))
+                    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                    @endif
+
                     <div class="row">
                         <div class="col-12">
                             <!-- Default box -->
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="{{url('/addrooms')}}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{url('postroom')}}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="card-body">
                                             <div class="card-body">
@@ -37,16 +53,12 @@
                                                         placeholder="type">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1">total price </label>
-                                                    <input type="number" name="total" class="form-control" id="exampleInputEmail1" placeholder="total">
-                                                </div>
-                                                <div class="form-group">
                                                     <label for="exampleInputEmail1">currency </label>
                                                     <input type="text" name="currency" class="form-control" id="exampleInputEmail1" placeholder="currency">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword1">description</label>
-                                                    <textarea name="description" class="form-control" id="exampleInputEmail1" placeholder="description"></textarea>
+                                                    <label for="exampleInputPassword1">home image</label>
+                                                    <input type="file" name="image" class="form-control" id="exampleInputEmail1" placeholder="choose images">
                                                 </div>
                                             </div>
                                             <div class="card-footer">
@@ -59,7 +71,6 @@
                     </div>
                 </div>
             </section>
-    <!-- /.content -->
 </div>
 
 

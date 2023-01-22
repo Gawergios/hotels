@@ -9,32 +9,34 @@
     <title>register</title>
 </head>
 <body>
-{{-- @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"]) --}}
 
 
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+{{-- success message --}}
+@include('sweetalert::alert')
 
 <div class="container">
     <div class="row">
         <div class="col-md-4">
-            @if(Session::has('message'))
-           <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+            
+            {{-- validation errors --}}
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
+
             <p>Register a new membership</p>
             <form action="{{url("postregister")}}" method="POST" class="form-group">
                 @csrf
                 <input type="text" name="name" class="form-control" placeholder="name">
                 <input type="email" name="email" class="form-control" placeholder="email">
+                <input type="number" name="phone" class="form-control" placeholder="phone">
                 <input type="password" name="password" class="form-control" placeholder="password">
-                <input type="password" name="password_confirmation" class="form-control" placeholder="repassword">
+                <input type="password" name="password_confirmation" class="form-control" placeholder="password_confirmation">
                 <input type="submit" name="register" class="btn btn-success" value="register">
                 <div>
                     <a href={{url("login")}}>login page</a>
